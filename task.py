@@ -13,26 +13,12 @@ M= TypeVar('M')
 
 
 
-
-
-
-
-
-
-
-
 class ExtractText(beam.DoFn):
     def process(self,element):
         row = element.split(',')
         pattern= re.compile((r'\{+|\}+|\"+'))
         new_row = [re.sub(pattern,'',item) for item in row ]
         yield new_row
-
-
-
-
-
-
 
 
 def data_mapping(element:beam.PCollection[str]):
@@ -74,10 +60,6 @@ def data_mapping(element:beam.PCollection[str]):
     yield mapped
 
 
-
-
-
-
 class Property(NamedTuple):
     uniq_code: str
     date_of_transfer : str
@@ -95,11 +77,12 @@ class Property(NamedTuple):
 
 
 
-
 duration_name ={
     'F':'FREEHOLD',
     'L':'LEASEHOLD',
 }
+
+
 
 property_name= {
     'D':'DETACHED',
@@ -109,20 +92,27 @@ property_name= {
     'O':'OTHER'
 }
 
+
+
 age_prop ={
     'Y':True,
     'N':False,
 }
+
+
+
 category ={
     'A': 'STANDARD PRICE',
     'B': 'ADDITIONAL PRICE',
 }
+
+
+
 rec_status ={
     'A': 'ADDITION',
     'B': 'CHANGE',
     'C': 'DELETE',
 }
-
 
 
 
@@ -165,7 +155,7 @@ if __name__ == '__main__':
     logging.getLogger().setLevel(logging.INFO)     
         # output_file= os.path.join(directory,'new_data') # Not implemented in python 3.9---> output_file = beam.io.filesystem.FileSystem.join(directory,'new_data') 
     check = False
-    
+
     # just to check to ensure csv files exist
     for *_,file in os.walk(os.getcwd()):
         if file:
