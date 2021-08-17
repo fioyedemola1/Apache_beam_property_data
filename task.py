@@ -1,5 +1,3 @@
-
-
 import os
 import re
 import logging
@@ -12,6 +10,12 @@ from typing import NamedTuple,Optional,TypeVar,Dict,Iterable,List
 
 
 M= TypeVar('M')
+
+
+
+
+
+
 
 
 
@@ -159,9 +163,24 @@ def run(directory: str,output_file: Optional[str]='output'):
 
 if __name__ == '__main__':
     logging.getLogger().setLevel(logging.INFO)     
-    # output_file= os.path.join(directory,'new_data') # Not implemented in python 3.9---> output_file = beam.io.filesystem.FileSystem.join(directory,'new_data') 
-    directory = os.getcwd()
-    run(directory)  
+        # output_file= os.path.join(directory,'new_data') # Not implemented in python 3.9---> output_file = beam.io.filesystem.FileSystem.join(directory,'new_data') 
+    check = False
+    
+    # just to check to ensure csv files exist
+    for *_,file in os.walk(os.getcwd()):
+        if file:
+            for i in file:
+                if i.endswith('.csv'):  
+                    check= True
+                    break
+    
+    if check:
+        directory = os.getcwd()
+        run(directory) 
+    else:
+        raise NotImplementedError('No csv File detected')
+    
+    
         
         
         
